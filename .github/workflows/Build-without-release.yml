@@ -35,7 +35,7 @@ jobs:
           mvn -B -U package -T 2C
           cd ..
       - name: Build with Maven
-        run: mvn -B -U package -T 2C
+        run: mvn -B -U package -T 2C -Dpmd.failOnViolation=false
       - name: Archive artifacts (Floodgate Bungee)
         uses: actions/upload-artifact@v1
         if: success()
