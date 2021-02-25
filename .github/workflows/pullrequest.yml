@@ -20,7 +20,7 @@ jobs:
         with:
           java-version: 1.8
       - name: Build with Maven
-        run: mvn -B package
+        run: mvn -B package -Dpmd.failOnViolation=false
       - name: Archive artifacts (Floodgate Bungee)
         uses: actions/upload-artifact@v1
         if: success()
