@@ -33,6 +33,7 @@ import net.kyori.adventure.audience.MessageType;
 import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -73,8 +74,10 @@ public class SpigotUserAudience implements UserAudience, ForwardingAudience.Sing
     }
 
     @Override
-    public void sendMessage(@NonNull Identity source, @NonNull Component message,
-                            @NonNull MessageType type) {
+    public void sendMessage(
+            @NonNull Identity source,
+            @NonNull Component message,
+            @NonNull MessageType type) {
         this.source.sendMessage(GsonComponentSerializer.gson().serialize(message));
     }
 
@@ -102,9 +105,16 @@ public class SpigotUserAudience implements UserAudience, ForwardingAudience.Sing
 
     public static final class SpigotConsoleAudience extends SpigotUserAudience
             implements ConsoleAudience {
-
         public SpigotConsoleAudience(CommandSender source, CommandUtil commandUtil) {
             super(new UUID(0, 0), "en_us", source, commandUtil);
+        }
+
+        @Override
+        public void sendMessage(
+                @NonNull Identity source,
+                @NonNull Component message,
+                @NonNull MessageType type) {
+            source().sendMessage(LegacyComponentSerializer.legacySection().serialize(message));
         }
     }
 
